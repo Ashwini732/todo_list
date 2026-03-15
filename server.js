@@ -21,6 +21,8 @@ app.get("/tasks", async (req, res) => {
   if (error) return res.json(error);
 
   res.json(data);
+
+
 });
 
 // Add task
@@ -35,8 +37,27 @@ app.post("/add-task", async (req, res) => {
   if (error) return res.json(error);
 
   res.json(data);
-});
 
-app.listen(3000, () => {
-  console.log("Server running on port 3000");
+
+
+});
+// Delete task
+app.delete("/delete-task/:id", async (req, res) => {
+
+  const { id } = req.params;
+
+  const { data, error } = await supabase
+    .from("tasks")
+    .delete()
+    .eq("id", id);
+
+  if (error) return res.json(error);
+
+  res.json({ message: "Task deleted" });
+
+});
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log("Server running");
 });
